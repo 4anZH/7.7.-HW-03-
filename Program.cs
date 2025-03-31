@@ -34,7 +34,6 @@
             }
             set 
             {
-                Distans = CheckNum("введите растояние",false);
             
             }
         }
