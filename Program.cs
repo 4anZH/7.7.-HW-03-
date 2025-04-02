@@ -1,49 +1,23 @@
 ﻿using System;
-
+using System.Security.Cryptography.X509Certificates;
 
 
 internal class Program
 {
-    public double CheckNum(string msg,bool checkZero,out double inum)
-    {
-        //Console.WriteLine(msg);
-        string str;
-        bool exitDo = true;
-        inum = 0;
-        do
-        {
-            str = Console.ReadLine();
 
-            if (double.TryParse(str, out double num))
-            {
-                if (num == 0 && checkZero == true)
-                {
-                    Console.WriteLine("Error " + msg);
-                }
-                else
-                {
-                    exitDo = false;
-                    inum = num;
-
-                }
-            }
-            else
-            {
-                Console.WriteLine("Error " + msg);
-
-            }
-
-
-        } while (exitDo);
-        return inum;
-
-
-    }
-    private static void Main(string[] args)
+    public static void Main(string[] args)
     {
         //string address = "Peshkov str 75";
         //double distans = 500;
         //double weight = 10;
+        string[,] arreyCourier = new string[1,4];
+        string[,] arreyOrder;
+
+        AddCourier(ref arreyCourier,"Piter","Foot",5);
+        AddCourier(ref arreyCourier, "Alex", "Car", 4);
+
+
+
 
         bool exitDo = true;
         do
@@ -58,7 +32,7 @@ internal class Program
             else if (ans==2)
             {
                 Console.WriteLine("Работа с курьерами");
-                viewСourier();
+                viewСourier(arreyCourier);
             }
             else if (ans == 3)
             {
@@ -125,22 +99,22 @@ internal class Program
 
     }
 
-    private static void viewСourier()
+    static void viewСourier(string[,] arreyCourier)
     {
 
 
         bool exitDo = true;
         do
         {
-            Console.WriteLine("Выберите действие\n1. Список активных курьров\n2. Добавить пешего\n3. Добавить вело\n4. Добавить авто\n5. Добавить грузо\n6. Удалить\n7. Возврат");
+            Console.WriteLine("Выберите действие\n1. Список курьров\n2. Добавить пешего\n3. Добавить вело\n4. Добавить авто\n5. Добавить грузо\n6. Удалить\n7. Возврат");
             double ans = CheckNum("Выберите действие", false);
             if (ans == 1)
             {
-
+                showArrey(arreyCourier);
             }
             else if (ans == 2)
             {
-                
+                СourierFoot courierFoot = new СourierFoot();
             }
             else if (ans == 3)
             {
@@ -266,31 +240,6 @@ internal class Program
     //{   
     //    protected string ID;
     //    public string[,] arreyСourier;
-    //    public void AddCourier() 
-    //    {
-    //        if (arreyСourier.GetUpperBound(0) == 0)
-    //        {
-    //            arreyСourier = new string[1, 4];
-
-    //        }
-    //        else
-    //        {
-    //            string[,] arreyTemp = new string[arreyСourier.GetUpperBound(0) + 1,4];
-    //            for (int i = 0; i < arreyСourier.GetUpperBound(0); i++)
-    //            {
-    //                for (int j = 0; j <= arreyСourier.GetUpperBound(1); j++) 
-    //                {
-    //                    arreyTemp[i, j]=arreyСourier[i,j];
-                    
-    //                }
-
-    //            }
-    //            arreyСourier=arreyTemp; 
-    //        }
-    //        arreyСourier[1, arreyСourier.Length] = "CR" + arreyСourier.Length.ToString("0000");
-    //        //arreyСourier[2, arreyСourier.Length] = Courier.;
-
-    //    }
 
     //}
 
@@ -400,7 +349,7 @@ internal class Program
             }
             else
             {
-
+                
                 exitDo = false;
             }
 
@@ -410,8 +359,60 @@ internal class Program
         return str;
     }
 
+    static void AddCourier(ref string[,] arreyCourier, string Name, string Type, int Rating)
+    {
+        //Console.WriteLine(arreyCourier.GetUpperBound(0));
+        //Console.WriteLine(arreyCourier.GetUpperBound(1));
+        if (arreyCourier[arreyCourier.GetUpperBound(0), 0] !=null)
+        {
+            
+        
+            string[,] arreyTemp = new string[arreyCourier.GetUpperBound(0) + 2, 4];
+            for (int i = 0; i <= arreyCourier.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= arreyCourier.GetUpperBound(1); j++)
+                {
+                    arreyTemp[i, j] = arreyCourier[i, j];
+
+                }
+
+            }
+            arreyCourier = arreyTemp;
+        }
+        arreyCourier[arreyCourier.GetUpperBound(0), 0] = "CR" + (arreyCourier.GetUpperBound(0) + 1).ToString("0000");
+        arreyCourier[arreyCourier.GetUpperBound(0), 1] = Name;
+        arreyCourier[arreyCourier.GetUpperBound(0), 2] = Type;
+        arreyCourier[arreyCourier.GetUpperBound(0), 3] = Rating.ToString();
+
+        //showArrey(arreyCourier);
 
 
+    }
+
+    static void showArrey(string[,] Arrey)
+    {
+
+
+        Console.WriteLine("\nСписок");
+        for (int i = 0; i <= Arrey.GetUpperBound(0); i++)
+        {
+            string str = (i + 1).ToString() + ". ";
+                
+                
+            for (int j = 0; j <= Arrey.GetUpperBound(1); j++)
+            {
+
+                
+                str += Arrey[i, j]+" ";
+                
+
+            }
+            Console.WriteLine(str);
+        }
+
+        Console.WriteLine();
+
+    }
 
 
 
